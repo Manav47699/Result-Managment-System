@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses - SRMS{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800">Courses</h2>
+            <p class="text-gray-600">Manage course records</p>
+        </div>
+        <a href="{% url 'course_create' %}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition font-semibold">
+            + Add New Course
+        </a>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-gray-300 p-3 text-left">ID</th>
+                    <th class="border border-gray-300 p-3 text-left">Course Name</th>
+                    <th class="border border-gray-300 p-3 text-left">Code</th>
+                    <th class="border border-gray-300 p-3 text-left">Duration (months)</th>
+                    <th class="border border-gray-300 p-3 text-left">Fee</th>
+                    <th class="border border-gray-300 p-3 text-left">Enrolled Students</th>
+                    <th class="border border-gray-300 p-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 p-3">{{ course.id }}</td>
+                    <td class="border border-gray-300 p-3 font-semibold">{{ course.name }}</td>
+                    <td class="border border-gray-300 p-3">{{ course.code }}</td>
+                    <td class="border border-gray-300 p-3">{{ course.duration }}</td>
+                    <td class="border border-gray-300 p-3">${{ course.fee }}</td>
+                    <td class="border border-gray-300 p-3">{{ course.student_count }}</td>
+                    <td class="border border-gray-300 p-3 text-center">
+                        <a href="{% url 'course_update' course.id %}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                        <a href="{% url 'course_delete' course.id %}" 
+                           onclick="return confirm('Are you sure?')"
+                           class="text-red-600 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="border border-gray-300 p-8 text-center text-gray-500">
+                        No courses found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

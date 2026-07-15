@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Results - SRMS{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800">Results</h2>
+            <p class="text-gray-600">Manage exam results</p>
+        </div>
+        <a href="{% url 'result_create' %}" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition font-semibold">
+            + Add New Result
+        </a>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-gray-300 p-3 text-left">ID</th>
+                    <th class="border border-gray-300 p-3 text-left">Student</th>
+                    <th class="border border-gray-300 p-3 text-left">Course</th>
+                    <th class="border border-gray-300 p-3 text-left">Subject</th>
+                    <th class="border border-gray-300 p-3 text-left">Marks</th>
+                    <th class="border border-gray-300 p-3 text-left">Percentage</th>
+                    <th class="border border-gray-300 p-3 text-left">Grade</th>
+                    <th class="border border-gray-300 p-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 p-3">{{ result.id }}</td>
+                    <td class="border border-gray-300 p-3 font-semibold">{{ result.student_name }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.course_name }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.subject_name }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.marks_obtained }}/{{ result.total_marks }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.percentage }}%</td>
+                    <td class="border border-gray-300 p-3">
+                        <span class="px-2 py-1 rounded {% if result.percentage >= 80 %}bg-green-100 text-green-800{% elif result.percentage >= 60 %}bg-blue-100 text-blue-800{% elif result.percentage >= 40 %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ result.grade }}
+                        </span>
+                    </td>
+                    <td class="border border-gray-300 p-3 text-center">
+                        <a href="{% url 'result_update' result.id %}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                        <a href="{% url 'result_delete' result.id %}" 
+                           onclick="return confirm('Are you sure?')"
+                           class="text-red-600 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="border border-gray-300 p-8 text-center text-gray-500">
+                        No results found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

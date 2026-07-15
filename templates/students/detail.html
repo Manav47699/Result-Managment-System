@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Details - SRMS{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-gray-800">Student Details</h2>
+        <div class="space-x-2">
+            <a href="{% url 'result_by_student' student.id %}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
+                View Results
+            </a>
+            <a href="{% url 'student_update' student.id %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                Edit
+            </a>
+            <a href="{% url 'student_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
+                Back to List
+            </a>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Full Name</p>
+            <p class="text-lg font-semibold">{{ student.name }}</p>
+        </div>
+        
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Email</p>
+            <p class="text-lg font-semibold">{{ student.email }}</p>
+        </div>
+        
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Phone</p>
+            <p class="text-lg font-semibold">{{ student.phone|default:"-" }}</p>
+        </div>
+        
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Gender</p>
+            <p class="text-lg font-semibold">{{ student.gender|default:"-" }}</p>
+        </div>
+        
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Date of Birth</p>
+            <p class="text-lg font-semibold">{{ student.date_of_birth|default:"-" }}</p>
+        </div>
+        
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Course</p>
+            <p class="text-lg font-semibold">{{ student.course_name }}</p>
+        </div>
+        
+        <div>
+            <p class="text-sm text-gray-600 mb-1">Enrollment Date</p>
+            <p class="text-lg font-semibold">{{ student.enrollment_date }}</p>
+        </div>
+        
+        <div class="md:col-span-2">
+            <p class="text-sm text-gray-600 mb-1">Address</p>
+            <p class="text-lg font-semibold">{{ student.address|default:"-" }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

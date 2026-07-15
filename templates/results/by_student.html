@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Results - SRMS{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800">Results for {{ student.name }}</h2>
+            <p class="text-gray-600">{{ student.email }} | {{ student.course_name }}</p>
+        </div>
+        <a href="{% url 'student_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition">
+            Back to Students
+        </a>
+    </div>
+
+    {% if summary %}
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-blue-100 p-4 rounded-lg">
+            <p class="text-sm text-gray-700">Total Subjects</p>
+            <p class="text-2xl font-bold text-blue-700">{{ summary.total_subjects }}</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded-lg">
+            <p class="text-sm text-gray-700">Total Marks</p>
+            <p class="text-2xl font-bold text-green-700">{{ summary.total_marks_obtained }}/{{ summary.total_marks_possible }}</p>
+        </div>
+        <div class="bg-purple-100 p-4 rounded-lg">
+            <p class="text-sm text-gray-700">Average Percentage</p>
+            <p class="text-2xl font-bold text-purple-700">{{ summary.average_percentage }}%</p>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded-lg">
+            <p class="text-sm text-gray-700">Overall Grade</p>
+            <p class="text-2xl font-bold text-yellow-700">{{ summary.overall_grade }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border border-gray-300 p-3 text-left">Subject</th>
+                    <th class="border border-gray-300 p-3 text-left">Marks Obtained</th>
+                    <th class="border border-gray-300 p-3 text-left">Total Marks</th>
+                    <th class="border border-gray-300 p-3 text-left">Percentage</th>
+                    <th class="border border-gray-300 p-3 text-left">Grade</th>
+                    <th class="border border-gray-300 p-3 text-left">Exam Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 p-3 font-semibold">{{ result.subject_name }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.marks_obtained }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.total_marks }}</td>
+                    <td class="border border-gray-300 p-3">{{ result.percentage }}%</td>
+                    <td class="border border-gray-300 p-3">
+                        <span class="px-2 py-1 rounded {% if result.percentage >= 80 %}bg-green-100 text-green-800{% elif result.percentage >= 60 %}bg-blue-100 text-blue-800{% elif result.percentage >= 40 %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ result.grade }}
+                        </span>
+                    </td>
+                    <td class="border border-gray-300 p-3">{{ result.exam_date|default:"-" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="border border-gray-300 p-8 text-center text-gray-500">
+                        No results available for this student
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

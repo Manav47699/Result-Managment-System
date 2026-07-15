@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - SRMS{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <h2 class="text-3xl font-bold text-gray-800">Dashboard</h2>
+    <p class="text-gray-600">Overview of the system</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Students Card -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm">Total Students</p>
+                <h3 class="text-4xl font-bold text-blue-600">{{ stats.total_students }}</h3>
+            </div>
+            <div class="text-blue-600 text-5xl">👨‍🎓</div>
+        </div>
+        <a href="{% url 'student_list' %}" class="text-blue-600 text-sm hover:underline mt-4 block">View all students →</a>
+    </div>
+    
+    <!-- Courses Card -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm">Total Courses</p>
+                <h3 class="text-4xl font-bold text-green-600">{{ stats.total_courses }}</h3>
+            </div>
+            <div class="text-green-600 text-5xl">📚</div>
+        </div>
+        <a href="{% url 'course_list' %}" class="text-green-600 text-sm hover:underline mt-4 block">View all courses →</a>
+    </div>
+    
+    <!-- Results Card -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm">Total Results</p>
+                <h3 class="text-4xl font-bold text-purple-600">{{ stats.total_results }}</h3>
+            </div>
+            <div class="text-purple-600 text-5xl">📊</div>
+        </div>
+        <a href="{% url 'result_list' %}" class="text-purple-600 text-sm hover:underline mt-4 block">View all results →</a>
+    </div>
+</div>
+
+<!-- Recent Students and Top Performers -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Recent Students -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">Recent Enrollments</h3>
+        {% if stats.recent_students %}
+        <div class="space-y-3">
+            {% for student in stats.recent_students %}
+            <div class="flex justify-between items-center border-b pb-2">
+                <div>
+                    <p class="font-semibold text-gray-800">{{ student.name }}</p>
+                    <p class="text-sm text-gray-600">{{ student.course }}</p>
+                </div>
+                <span class="text-xs text-gray-500">{{ student.enrollment_date }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-4">No recent enrollments</p>
+        {% endif %}
+    </div>
+    
+    <!-- Top Performers -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">Top Performers</h3>
+        {% if stats.top_performers %}
+        <div class="space-y-3">
+            {% for performer in stats.top_performers %}
+            <div class="flex justify-between items-center border-b pb-2">
+                <div>
+                    <p class="font-semibold text-gray-800">{{ performer.name }}</p>
+                    <p class="text-sm text-gray-600">{{ performer.course }}</p>
+                </div>
+                <span class="text-lg font-bold text-green-600">{{ performer.percentage }}%</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-center py-4">No results available</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Course Statistics -->
+{% if stats.course_stats %}
+<div class="bg-white rounded-lg shadow-lg p-6 mt-6">
+    <h3 class="text-xl font-bold mb-4 text-gray-800">Course Enrollment Statistics</h3>
+    <div class="space-y-3">
+        {% for course in stats.course_stats %}
+        <div class="flex justify-between items-center">
+            <span class="text-gray-700">{{ course.course_name }}</span>
+            <div class="flex items-center">
+                <div class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-semibold">
+                    {{ course.student_count }} student{{ course.student_count|pluralize }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
